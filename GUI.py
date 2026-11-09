@@ -2,26 +2,32 @@
 
 import functions as fn
 import FreeSimpleGUI as sg
+import time
 
+theme= sg.theme("DarkGrey4")
 #Detailing the UI as to how we want it to look and which controls we want to have
-
+clock = sg.Text('', key='clock')
 label = sg.Text("Type a To-Do")
 input_box = sg.InputText(tooltip="Enter a To-Do", key = "todo")
 button = sg.Button("Add")
 list_box = sg.Listbox(values=fn.get_todos(), key = "todos",enable_events=True, size=(25,7))
 edit_button = sg.Button("Edit")
 complete_button = sg.Button("Complete")
-exit_button = sg.Button("Exit")
+exit_button = sg.Button("Exit", size=30)
 
 #Creating a UI Window
 window = sg.Window("My To-Do App",
-                   layout=[[label], [input_box, button],
+                   layout=[[clock],
+                           [label], [input_box, button],
                            [list_box, edit_button, complete_button],
                            [exit_button]],
                    font=("Cooper", 10))
 
+
+
 while True:
-    event, values = window.read()
+    event, values = window.read(timeout=10)
+    window["clock"].update(value=time.strftime("%d/%m/%Y %H:%M:%S"))
 
     match event:
         case"Add":
